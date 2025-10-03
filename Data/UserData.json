@@ -1,5 +1,7 @@
 {
-    "UserId": [],
-    "Username": [""],
-
+  "UserId": [],
+  "Username": [],
+  "GrassHours": [],
+  "Streak": [],
+  "LastLogged": []
 }
