@@ -1,16 +1,35 @@
-import utils
-import json
 from fastapi import FastAPI
+from utils import *
+import json
 
 app = FastAPI()
 
-# Step 1: Read the JSON file
-with open('Data/UserData.json', 'r') as file:
-    data = json.load(file)
+"""
+Json read & write
+    path = "SOMETHING"
 
-# Step 2: Modify the data
-data['text'] = 'new_value'  # Update a key
+    with open(path, 'r') as file:
+        data = json.load(file)
 
-# Step 3: Write the updated data back to the file
-with open('Data/UserData.json', 'w') as file:
-    json.dump(data, file, indent=4)  # Use indent for pretty formatting
+    with open(path, 'w') as file:
+        json.dump(data, file, indent=4)  # Use indent for pretty formatting
+"""
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello World!"}
+
+@app.get("/login/{Username}")
+def login(username: str, password: str):
+    path = "Data/UserData.json"
+    with open(path, 'r') as file:
+        data = json.load(file)
+    #if data["password"] != password:
+
+@app.get("/signup/{Username}")
+def signup(username: str, password: str):
+    path = "Data/UserData.json"
+    with open(path, 'r') as file:
+        data = json.load(file)
+
+    #if

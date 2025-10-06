@@ -1,5 +1,6 @@
 from datetime import datetime
 import time
+#import bcrypt
 
 def log(func):
     def wrapper():
@@ -8,7 +9,7 @@ def log(func):
         print(f"{func.__name__}() ran @{datetime.now()}, taking {time.perf_counter() - start} seconds)")
     return wrapper
 
-def TimeoutExpired(seconds):
+def timeout_expired(seconds):
     def decorator(function):
         def wrapper(*args, **kwargs):
             start = time.perf_counter()
@@ -19,9 +20,4 @@ def TimeoutExpired(seconds):
         return wrapper
     return decorator
 
-#Test
-@TimeoutExpired(.01)
-def hello():
-    print("Hello World!")
-
-hello()
+#def hash_password(password):
