@@ -1,9 +1,13 @@
 {
-  "UserId": [],
-  "Username": [],
-  "Password": [],
-  "GrassHours": [],
-  "Streak": [],
-  "LastLogged": [],
-  "LastUserId": 0
+  "NextUserId": 2,
+
+  "1": {
+    "UserId": [],
+    "Username": [],
+    "Password": [],
+    "GrassHours": [],
+    "Streak": [],
+    "LastLogged": [],
+    "LastUserId": 0
+  }
 }
