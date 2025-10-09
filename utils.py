@@ -1,6 +1,6 @@
 from datetime import datetime
 import time
-#import bcrypt
+import bcrypt
 
 def log(func):
     def wrapper():
@@ -19,5 +19,3 @@ def timeout_expired(seconds):
             return result
         return wrapper
     return decorator
-
-#def hash_password(password):

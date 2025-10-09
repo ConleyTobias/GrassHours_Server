@@ -32,4 +32,10 @@ def signup(username: str, password: str):
     with open(path, 'r') as file:
         data = json.load(file)
 
-    #if
+    data["UserId"].append(data["LastUserId"])
+    data["LastUserId"] += 1
+    data["Username"].append(username)
+    data["Password"].append(bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()))
+    data["GrassHours"].append(0)
+    data["Streak"].append(0)
+    data["LastLogged"].append("")
