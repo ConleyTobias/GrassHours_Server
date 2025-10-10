@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from utils import *
 import json
+import bcrypt
 
 app = FastAPI()
 
@@ -10,20 +11,22 @@ def read_root():
 
 
 @app.get("/login/{Username}")
-def login(username: str, password: str):
-    path = "Data/UserData.json"
-    with open(path, 'r') as file:
-        data = json.load(file)
-    #if :
+def login(username: str, entered_password: str):
+    user_data = get_json("Data/UserData.json")
+    username_data = get_json("Data/Usernames.json")
+
+    user_id = str(username_data[username])
+    current_password = user_data[user_id]['Password'].encode('utf-8')
+    if bcrypt.checkpw(entered_password.encode('utf-8'), current_password):
+        return {"message": "Login Successful"}
+    else:
+        return {"message": "Inncorrect Password"}
 
 
 @app.get("/signup/{Username}")
 def signup(username: str, password: str):
-    with open("Data/UserData.json", 'r') as user_data_file:
-        user_data = json.load(user_data_file)
-
-    with open("Data/Usernames.json", 'r') as username_file:
-        usernames_data = json.load(username_file)
+    user_data = get_json("Data/UserData.json")
+    usernames_data = get_json("Data/Usernames.json")
 
     if username in usernames_data:
         return Exception("Username already exists")
@@ -47,18 +50,20 @@ def signup(username: str, password: str):
         usernames_data[username] = next_user_id
         user_data["NextUserId"] += 1
 
-        print(user_data)
-        with open('Data/UserData.json', 'w') as user_data_file:
-            json.dump(user_data, user_data_file, indent=4)  # Use indent for pretty formatting
+        dump_json("Data/UserData.json", user_data)
+        dump_json("Data/Usernames.json", usernames_data)
 
-        print(usernames_data)
-        with open('Data/Usernames.json', 'w') as username_file:
-            json.dump(usernames_data, username_file, indent=4)  # Use indent for pretty formatting
-
-        return "success"
+        return {"message": "Signup Successful"}
 
     except:
         return Exception("Something went wrong")
 
+print(signup("new_2", "123456"))
 
-print(signup("new_John Doe", "123456"))
+@app.get("/changePassword/{Username}")
+def change_password(username: str, current_password: str, new_password: str):
+    with open("Data/Usernames.json", 'r') as username_file:
+        usernames_data = json.load(username_file)
+
+    with open("Data/UserData.json", 'r') as user_data_file:
+        user_data = json.load(user_data_file)

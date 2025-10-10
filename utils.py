@@ -1,6 +1,6 @@
 from datetime import datetime
 import time
-import bcrypt
+import json
 
 def log(func):
     def wrapper():
@@ -9,13 +9,10 @@ def log(func):
         print(f"{func.__name__}() ran @{datetime.now()}, taking {time.perf_counter() - start} seconds)")
     return wrapper
 
-def timeout_expired(seconds):
-    def decorator(function):
-        def wrapper(*args, **kwargs):
-            start = time.perf_counter()
-            result = function(*args, **kwargs)
-            if time.perf_counter() - start > seconds:
-                raise Exception(f"TimeoutExpired: Over {seconds} seconds")
-            return result
-        return wrapper
-    return decorator
+def get_json(path):
+    with open(path, 'r') as file:
+        return json.load(file)
+
+def dump_json(path, data):
+    with open(path, 'w') as file:
+        json.dump(data, file, indent=4)
