@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from utils import *
-import json
 import bcrypt
 
 app = FastAPI()
@@ -15,12 +14,15 @@ def login(username: str, entered_password: str):
     user_data = get_json("Data/UserData.json")
     username_data = get_json("Data/Usernames.json")
 
+    if username not in user_data:
+        return {"message": "Username not found"}
+
     user_id = str(username_data[username])
     current_password = user_data[user_id]['Password'].encode('utf-8')
     if bcrypt.checkpw(entered_password.encode('utf-8'), current_password):
         return {"message": "Login Successful"}
     else:
-        return {"message": "Inncorrect Password"}
+        return {"message": "Incorrect Password"}
 
 
 @app.get("/signup/{Username}")
@@ -62,8 +64,15 @@ print(signup("new_2", "123456"))
 
 @app.get("/changePassword/{Username}")
 def change_password(username: str, current_password: str, new_password: str):
-    with open("Data/Usernames.json", 'r') as username_file:
-        usernames_data = json.load(username_file)
+    user_data = get_json("Data/UserData.json")
+    usernames_data = get_json("Data/Usernames.json")
 
-    with open("Data/UserData.json", 'r') as user_data_file:
-        user_data = json.load(user_data_file)
+    if login(username, current_password) == {"message": "Login Successful"}:
+        try:
+            user_id = str(usernames_data[username])
+            user_data[user_id]['Password'] = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        except:
+            return Exception("Something went wrong")
+        return {"message": "Change Password Successful"}
+    else:
+        return login(username, current_password)
