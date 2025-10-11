@@ -1,0 +1,12 @@
+{
+    "NextUserId": 2,
+    "1": {
+        "UserId": 1,
+        "Username": "John Doe",
+        "Password": "$2b$12$KFDdIwntLYmvm5pMGjS88OfnVN8ZqRO3sz5bP7Vnqt89ISB.q3Xn.",
+        "GrassHours": 0,
+        "Streak": 0,
+        "LastLogged": "",
+        "Denied": []
+    }
+}
